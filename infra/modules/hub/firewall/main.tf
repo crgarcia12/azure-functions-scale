@@ -50,7 +50,6 @@ resource "azurerm_firewall_network_rule_collection" "any-to-any-test" {
     ]
   }
 
-  
   rule {
     name = "allowall"
 
