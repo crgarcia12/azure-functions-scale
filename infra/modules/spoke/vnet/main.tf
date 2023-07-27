@@ -163,6 +163,44 @@ resource "azurerm_subnet_route_table_association" "stor-udr" {
   subnet_id      = azurerm_subnet.stor.id
   route_table_id = azurerm_route_table.udr.id
 }
+
+////////////     Functions-IN   /////////////////////
+resource "azurerm_subnet" "funcin" {
+  name                 = "func-in"
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = ["10.${var.ip_second_octet}.6.0/24"]
+}
+
+resource "azurerm_subnet_network_security_group_association" "funcin-nsg" {
+  subnet_id                 = azurerm_subnet.funcin.id
+  network_security_group_id = azurerm_network_security_group.nsg.id
+}
+
+resource "azurerm_subnet_route_table_association" "funcin-udr" {
+  subnet_id      = azurerm_subnet.funcin.id
+  route_table_id = azurerm_route_table.udr.id
+}
+
+
+////////////     Functions-OUT    /////////////////////
+resource "azurerm_subnet" "funcout" {
+  name                 = "func-out"
+  resource_group_name  = var.resource_group_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = ["10.${var.ip_second_octet}.7.0/24"]
+}
+
+resource "azurerm_subnet_network_security_group_association" "funcout-nsg" {
+  subnet_id                 = azurerm_subnet.funcout.id
+  network_security_group_id = azurerm_network_security_group.nsg.id
+}
+
+resource "azurerm_subnet_route_table_association" "funcout-udr" {
+  subnet_id      = azurerm_subnet.funcout.id
+  route_table_id = azurerm_route_table.udr.id
+}
+
 #################################################
 #      VNET
 #################################################
@@ -183,7 +221,7 @@ resource "azurerm_virtual_network_peering" "spoke-hub" {
   resource_group_name       = var.resource_group_name
   virtual_network_name      = local.vnet_name
   remote_virtual_network_id = var.hub_vnet_id
-  use_remote_gateways       = true
+  use_remote_gateways       = false
 
   depends_on = [
     azurerm_virtual_network.vnet,

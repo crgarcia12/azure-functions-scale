@@ -16,6 +16,7 @@ module "spoke_vnet" {
 }
 
 module "spoke_vm" {
+  count               = 0
   source              = "./vm"
   prefix              = var.prefix
   location            = var.location
@@ -25,17 +26,17 @@ module "spoke_vm" {
   ssh_password        = var.ssh_password
 }
 
-# [COST] 
-# module "aks" {
-#   source              = "./aks"
-#   prefix              = var.prefix
-#   location            = var.location
-#   resource_group_name = azurerm_resource_group.spoke_rg.name
-#   resource_group_id   = azurerm_resource_group.spoke_rg.id
-#   subnet_id           = module.spoke_vnet.vnet_aks_subnet_id
-#   network_plugin_mode = var.aks_network_plugin_mode
-#   ebpf_data_plane     = var.aks_ebpf_data_plane
-# }
+module "aks" {
+  count               = 0
+  source              = "./aks"
+  prefix              = var.prefix
+  location            = var.location
+  resource_group_name = azurerm_resource_group.spoke_rg.name
+  resource_group_id   = azurerm_resource_group.spoke_rg.id
+  subnet_id           = module.spoke_vnet.vnet_aks_subnet_id
+  network_plugin_mode = var.aks_network_plugin_mode
+  ebpf_data_plane     = var.aks_ebpf_data_plane
+}
 
 module "storage" {
   source                                = "./storage"
@@ -45,4 +46,13 @@ module "storage" {
   subnet_id                             = module.spoke_vnet.vnet_stor_subnet_id
   privatelink_storageblob_dns_zone_name = var.privatelink_storageblob_dns_zone_name
   storage_dns_zone_rg                   = var.hub_rg_name
+}
+
+module "function" {
+  source              = "./function"
+  prefix              = var.prefix
+  location            = var.location
+  resource_group_name = azurerm_resource_group.spoke_rg.name
+  storage_name        = module.storage.storage_name
+  storage_key         = module.storage.storage_key
 }

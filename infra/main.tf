@@ -6,8 +6,8 @@ terraform {
     }
   }
   backend "azurerm" {
-    resource_group_name  = "crgar-glb-terraform-rg"
-    storage_account_name = "crgarglbterraformstor"
+    resource_group_name  = "crgar-legal-terraform-rg"
+    storage_account_name = "crgarlegalterraformstor"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
   }
@@ -53,20 +53,21 @@ module "spoke_eus_s1" {
   ]
 }
 
+
 #################################
 #           Hub Peerings
 #################################
 
-resource "azurerm_virtual_network_peering" "hub-hubweu" {
-  name                      = "hub-hubweu"
-  resource_group_name       = module.hub-eus.hub_rg_name
-  virtual_network_name      = module.hub-eus.hub_vnet_name
-  remote_virtual_network_id = module.hub_weu.hub_vnet_id
-}
+# resource "azurerm_virtual_network_peering" "hub-hubweu" {
+#   name                      = "hub-hubweu"
+#   resource_group_name       = module.hub-eus.hub_rg_name
+#   virtual_network_name      = module.hub-eus.hub_vnet_name
+#   remote_virtual_network_id = module.hub_weu.hub_vnet_id
+# }
 
-resource "azurerm_virtual_network_peering" "hubweu-hub" {
-  name                      = "hubweu-hub"
-  resource_group_name       = module.hub_weu.hub_rg_name
-  virtual_network_name      = module.hub_weu.hub_vnet_name
-  remote_virtual_network_id = module.hub-eus.hub_vnet_id
-}
+# resource "azurerm_virtual_network_peering" "hubweu-hub" {
+#   name                      = "hubweu-hub"
+#   resource_group_name       = module.hub_weu.hub_rg_name
+#   virtual_network_name      = module.hub_weu.hub_vnet_name
+#   remote_virtual_network_id = module.hub-eus.hub_vnet_id
+# }

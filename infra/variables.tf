@@ -1,6 +1,6 @@
 variable "prefix" {
   type    = string
-  default = "crgar-glb"
+  default = "crgar-legal"
 }
 variable "SSH_USERNAME" {
   type      = string
