@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure Functions: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python project to Azure Function App - crgar-legal-eus-s1-func-client
+name: Deploy Client App
 
 on:
   push:
@@ -17,6 +17,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      working-directory: src/client
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -27,11 +29,13 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Create and start virtual environment
+        working-directory: ${{ env.working-directory }}
         run: |
           python -m venv venv
           source venv/bin/activate
 
       - name: Install dependencies
+        working-directory: ${{ env.working-directory }}
         run: pip install -r requirements.txt
         
       # Optional: Add step to run tests here
@@ -41,7 +45,7 @@ jobs:
         with:
           name: python-app
           path: |
-            . 
+            ${{ env.working-directory }}
             !venv/
 
   deploy:
