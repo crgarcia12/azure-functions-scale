@@ -38,6 +38,13 @@ module "aks" {
   ebpf_data_plane     = var.aks_ebpf_data_plane
 }
 
+module "appinsights" {
+  source              = "./appinsights"
+  prefix              = var.prefix
+  location            = var.location
+  resource_group_name = azurerm_resource_group.spoke_rg.name
+}
+
 module "storage" {
   source                                = "./storage"
   prefix                                = var.prefix
@@ -49,10 +56,12 @@ module "storage" {
 }
 
 module "function" {
-  source              = "./function"
-  prefix              = var.prefix
-  location            = var.location
-  resource_group_name = azurerm_resource_group.spoke_rg.name
-  storage_name        = module.storage.storage_name
-  storage_key         = module.storage.storage_key
+  source                       = "./function"
+  prefix                       = var.prefix
+  location                     = var.location
+  resource_group_name          = azurerm_resource_group.spoke_rg.name
+  storage_name                 = module.storage.storage_name
+  storage_key                  = module.storage.storage_key
+  appinsights_key              = module.appinsights.instrumentation_key
+  appinsights_connectionstring = module.appinsights.connection_string
 }

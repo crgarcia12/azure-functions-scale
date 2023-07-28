@@ -26,3 +26,12 @@ variable "storage_key" {
   description = "Azure Storage Key"
   type        = string
 }
+variable "appinsights_key" {
+  description = "value of the appinsights key"
+  type        = string
+}
+
+variable "appinsights_connectionstring" {
+  description = "value of the appinsights connectionstring"
+  type        = string
+}
