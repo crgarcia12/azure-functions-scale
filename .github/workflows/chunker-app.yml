@@ -35,6 +35,9 @@ jobs:
         run: |
           python -m venv venv
           source venv/bin/activate
+          python
+          import sys
+          print(sys.version)
 
       - name: Install dependencies
         working-directory: ${{ env.working_directory }}
