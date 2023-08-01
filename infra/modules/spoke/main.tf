@@ -55,6 +55,13 @@ module "storage" {
   storage_dns_zone_rg                   = var.hub_rg_name
 }
 
+module "acr" {
+  source              = "./acr"
+  prefix              = var.prefix
+  location            = var.location
+  resource_group_name = azurerm_resource_group.spoke_rg.name
+}
+
 module "function" {
   source                       = "./function"
   prefix                       = var.prefix
@@ -64,4 +71,8 @@ module "function" {
   storage_key                  = module.storage.storage_key
   appinsights_key              = module.appinsights.instrumentation_key
   appinsights_connectionstring = module.appinsights.connection_string
+  acr_id                       = module.acr.acr_id
+  acr_url                      = module.acr.acr_url
+  acr_username                 = module.acr.acr_username
+  acr_password                 = module.acr.acr_password
 }

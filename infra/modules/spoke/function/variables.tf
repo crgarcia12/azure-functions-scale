@@ -35,3 +35,23 @@ variable "appinsights_connectionstring" {
   description = "value of the appinsights connectionstring"
   type        = string
 }
+
+variable "acr_url" {
+  description = "value of the acr url"
+  type        = string
+}
+
+variable "acr_id" {
+  description = "value of the acr id"
+  type        = string
+}
+
+variable "acr_username" {
+  description = "value of the acr username"
+  type        = string
+}
+
+variable "acr_password" {
+  description = "value of the acr password"
+  type        = string
+}
